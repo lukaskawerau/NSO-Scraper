@@ -13,11 +13,16 @@ soup = BeautifulSoup(page.text, "lxml")
 
 table = soup.find_all("td", class_="content")
 continents = table[0].find_all("h3")
+asia = table[0].find_all("b")
+continents.append(asia[0])
+
 continents.pop(0)
-previous_country = "empty"
 
 for continent in continents:
-	table = continent.next_sibling.next
+	if continent == continents[len(continents)-1]:
+		table = continent.previous_element.next_sibling.next
+	else:
+		table = continent.next_sibling.next
 	rows = table.find_all("tr")
 	for row in rows:
 		country = row.next.next.next
